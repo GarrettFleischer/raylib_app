@@ -1,4 +1,5 @@
 use raylib::consts::KeyboardKey::*;
+use raylib::consts::MouseButton::*;
 use raylib::prelude::*;
 
 const SCREEN_WIDTH: f32 = 640.0;
@@ -38,19 +39,29 @@ fn main() {
 fn update(rl: &RaylibHandle, ball: &mut Ball) {
     if rl.is_key_down(KEY_RIGHT) {
         ball.position.x += ball.speed;
-    }
-    if rl.is_key_down(KEY_LEFT) {
+    } else if rl.is_key_down(KEY_LEFT) {
         ball.position.x -= ball.speed;
-    }
-    if rl.is_key_down(KEY_DOWN) {
+    } else if rl.is_key_down(KEY_DOWN) {
         ball.position.y += ball.speed;
-    }
-    if rl.is_key_down(KEY_UP) {
+    } else if rl.is_key_down(KEY_UP) {
         ball.position.y -= ball.speed;
     }
+
     if rl.is_key_pressed(KEY_SPACE) {
         ball.color = if ball.color == Color::GREEN {
             Color::YELLOW
+        } else {
+            Color::GREEN
+        }
+    }
+
+    if rl.is_mouse_button_down(MOUSE_LEFT_BUTTON) {
+        ball.position = ball.position.lerp(rl.get_mouse_position(), 0.1)
+    }
+
+    if rl.is_mouse_button_pressed(MOUSE_RIGHT_BUTTON) {
+        ball.color = if ball.color == Color::GREEN {
+            Color::RED
         } else {
             Color::GREEN
         }
