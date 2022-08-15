@@ -4,6 +4,7 @@ use raylib::prelude::*;
 const SCREEN_WIDTH: f32 = 640.0;
 const SCREEN_HEIGHT: f32 = 480.0;
 
+#[derive(Clone, Copy)]
 struct Ball {
     position: Vector2,
     speed: f32,
@@ -14,7 +15,7 @@ struct Ball {
 fn main() {
     let (mut rl, thread) = raylib::init()
         .size(SCREEN_WIDTH as i32, SCREEN_HEIGHT as i32)
-        .title("Hello World!")
+        .title("Keyboard Input")
         .vsync()
         .build();
 
@@ -26,29 +27,36 @@ fn main() {
     };
 
     while !rl.window_should_close() {
-        if rl.is_key_down(KEY_RIGHT) {
-            ball.position.x += ball.speed;
-        }
-        if rl.is_key_down(KEY_LEFT) {
-            ball.position.x -= ball.speed;
-        }
-        if rl.is_key_down(KEY_DOWN) {
-            ball.position.y += ball.speed;
-        }
-        if rl.is_key_down(KEY_UP) {
-            ball.position.y -= ball.speed;
-        }
-        if rl.is_key_pressed(KEY_SPACE) {
-            ball.color = if ball.color == Color::GREEN {
-                Color::YELLOW
-            } else {
-                Color::GREEN
-            }
-        }
+        update(&rl, &mut ball);
 
         let mut d = rl.begin_drawing(&thread);
-
         d.clear_background(Color::BLACK);
-        d.draw_circle_v(ball.position, ball.radius, ball.color);
+        draw(&mut d, &ball);
     }
+}
+
+fn update(rl: &RaylibHandle, ball: &mut Ball) {
+    if rl.is_key_down(KEY_RIGHT) {
+        ball.position.x += ball.speed;
+    }
+    if rl.is_key_down(KEY_LEFT) {
+        ball.position.x -= ball.speed;
+    }
+    if rl.is_key_down(KEY_DOWN) {
+        ball.position.y += ball.speed;
+    }
+    if rl.is_key_down(KEY_UP) {
+        ball.position.y -= ball.speed;
+    }
+    if rl.is_key_pressed(KEY_SPACE) {
+        ball.color = if ball.color == Color::GREEN {
+            Color::YELLOW
+        } else {
+            Color::GREEN
+        }
+    }
+}
+
+fn draw(d: &mut RaylibDrawHandle, ball: &Ball) {
+    d.draw_circle_v(ball.position, ball.radius, ball.color);
 }
