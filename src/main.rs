@@ -84,6 +84,8 @@ fn update(rl: &RaylibHandle, state: &mut State) {
 }
 
 fn draw(d: &mut RaylibDrawHandle, state: &State) {
+    draw_text_box(d, "This is a textbox", 10, 10, 25, 25, 20, Color::GREEN);
+
     draw_text_center(d, format!("{}", state.value).as_str(), 10, 32, Color::WHITE);
     d.draw_circle_v(state.ball.position, state.ball.radius, state.ball.color);
 }
@@ -97,4 +99,19 @@ fn draw_text_center(d: &mut RaylibDrawHandle, text: &str, y: i32, font_size: i32
         font_size,
         color,
     )
+}
+
+fn draw_text_box(
+    d: &mut RaylibDrawHandle,
+    text: &str,
+    x: i32,
+    y: i32,
+    width: i32,
+    height: i32,
+    font_size: i32,
+    color: Color,
+) {
+    let mut scissor_mode = d.begin_scissor_mode(x, y, width, height);
+    scissor_mode.draw_rectangle_lines(x, y, width, height, Color::WHITE);
+    scissor_mode.draw_text(text, x, y, font_size, color);
 }
