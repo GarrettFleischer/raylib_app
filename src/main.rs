@@ -1,6 +1,5 @@
 use raylib::consts::KeyboardKey::*;
 use raylib::consts::MouseButton::*;
-use raylib::ffi::GetRandomValue;
 use raylib::prelude::*;
 
 const SCREEN_WIDTH: f32 = 640.0;
